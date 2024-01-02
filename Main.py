@@ -87,7 +87,7 @@ def add_term():
 
     dictionary_folder = 'Dictionary'
     dictionary_path = os.path.join(dictionary_folder, dictionary_name)
-
+    dictionary_path += ".json" 
 
     # Создаем словарь, если его нет
     if not os.path.exists(dictionary_path):
@@ -195,6 +195,7 @@ def get_dictionary(dict_name):
 
 def load_test(test_name):
     test_path = os.path.join("Test", f"{test_name}.json")
+    print(test_path)
     if os.path.exists(test_path):
         with open(test_path, 'r', encoding='utf-8') as json_file:
             data = json.load(json_file)
@@ -275,8 +276,12 @@ def submit_test():
 
     tmp = current_url.split('/')[-1]
     test_name = tmp.split('-')[0]
+    test_name = test_name.replace("%20"," ")
     key = tmp.split('-')[1]
     test = load_test(test_name)
+
+    print(test_name)
+    print(test)
 
     if test:
         creator = TestCreator(test)
@@ -288,7 +293,7 @@ def submit_test():
         
         return jsonify(result)
 
-    return redirect('/result_page?result=Ошибка: тест не найден')
+    return jsonify("Тест не найден")
 
 # Отключение вывода логов в консоль
 log = logging.getLogger('werkzeug')
