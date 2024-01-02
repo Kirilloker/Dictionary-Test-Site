@@ -29,7 +29,6 @@
         background-color: rgba(0, 0, 0, 0.7);
         padding: 20px;
         border-radius: 10px;
-        max-width: 600px; /* Ограничиваем максимальную ширину контейнера */
       }
 
       .btn-primary {
@@ -45,30 +44,11 @@
         border-color: #45a049;
       }
 
-      .input-group {
-        margin-bottom: 15px;
-      }
-
-      .input-group label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
       .question-container {
         margin-bottom: 20px;
       }
 
-      .btn-container {
-        display: flex;
-        justify-content: center;
-      }
-
-      .btn-container button {
-        margin: 5px;
-      }
-
-      h1,
-      h2 {
+      h1 {
         text-align: center;
       }
     </style>
@@ -81,26 +61,18 @@
       <div class="question-container">
         <h2>Вопрос:</h2>
         <p>{{ question }}</p>
-        <div class="input-group">
-          <label for="answer_{{ loop.index }}">Ответ:</label>
-          <input
-            type="text"
-            id="answer_{{ loop.index }}"
-            name="answer_{{ loop.index }}"
-            class="form-control"
-            required
-          />
-        </div>
+        <label for="answer">Ответ:</label>
+        <input
+          type="text"
+          id="answer"
+          name="answer"
+          class="form-control"
+          required
+        />
       </div>
       {% endfor %}
 
-      <!-- ... (ваш предыдущий HTML код) -->
-      {% set total_questions = test_data.questions|length %}
-      <div class="btn-container">
-        <button class="btn btn-primary" onclick="submitTest()">
-          Отправить
-        </button>
-      </div>
+      <button class="btn btn-primary" onclick="submitTest()">Отправить</button>
     </div>
 
     <!-- Подключение Bootstrap JS через CDN -->
@@ -109,38 +81,36 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
+
     <script>
-      function submitTest(totalQuestions) {
-        var test_name = "{{ test_name }}";
-        var key = document.getElementById("key").value;
+      function submitTest() {
+        // Получить текущую URL
+        var currentURL = window.location.href;
 
+        // Получить список ответов
         var answers = [];
+        var answerInputs = document.querySelectorAll('input[name="answer"]');
+        answerInputs.forEach(function (input) {
+          answers.push(input.value);
+        });
 
-        for (var i = 1; i <= totalQuestions; i++) {
-          var answer = document.getElementById("answer_" + i).value;
-          answers.push(answer);
-        }
-
-        var data = {
-          test_name: test_name,
-          key: key,
-          answers: answers,
-        };
-
+        // Отправить данные на бэкенд (замените на ваш реальный путь)
         fetch("/submit_test", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            answers: answers,
+            currentURL: currentURL,
+          }),
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("Ответы отправлены на сервер:", data);
+            console.log(data);
+            // Возможно, здесь вы захотите выполнить какие-то дополнительные действия после отправки теста
           })
-          .catch((error) => {
-            console.error("Ошибка при отправке ответов:", error);
-          });
+          .catch((error) => console.error("Ошибка при отправке теста:", error));
       }
     </script>
   </body>

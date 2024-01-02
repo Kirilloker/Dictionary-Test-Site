@@ -214,19 +214,62 @@ def generate_test(test_name, dictionaries, num_questions, term_ratio, acceptable
 
     return test
 
+from difflib import SequenceMatcher
+
+def calculate_similarity(str1, str2):
+    # Функция для расчета процента схожести двух строк
+    matcher = SequenceMatcher(None, str1, str2)
+    return matcher.ratio() * 100
+
+def evaluate_answers(correct_answers, user_answers, accuracy_threshold):
+    result = ""
+    correct_count = 0
+    total_questions = len(correct_answers)
+
+    for i in range(total_questions):
+        correct_answer = correct_answers[i]
+        user_answer = user_answers[i]
+
+        similarity_percentage = calculate_similarity(correct_answer, user_answer)
+
+        result += (f"Вопрос {i + 1}:\n")
+        result += (f"Правильный ответ: {correct_answer}\n")
+        result += (f"Ответ пользователя: {user_answer}\n")
+        result += (f"Схожесть: {similarity_percentage:.2f}%\n\n")
+
+        if similarity_percentage >= accuracy_threshold:
+            correct_count += 1
+
+    incorrect_count = total_questions - correct_count
+    accuracy_percentage = (correct_count / total_questions) * 100
+
+    result += (f"Итог:\n")
+    result += (f"Правильных ответов: {correct_count}\n")
+    result += (f"Неправильных ответов: {incorrect_count}\n")
+    result += (f"Процент правильности: {accuracy_percentage:.2f}%\n")
+
+    return result
+
 
 @app.route('/submit_test', methods=['POST'])
 def submit_test():
-    print('test')
     data = request.json
-    test_name = data.get('test_name')
-    key = data.get('key')
     answers = data.get('answers')
+    current_url = data.get('currentURL')
 
-    # Вместо вывода в консоль, вы можете использовать эти данные в вашей логике
-    print(f"Test Name: {test_name}")
-    print(f"Key: {key}")
-    print(f"Answers: {answers}")
+    tmp = current_url.split('/')[-1]
+    test_name = tmp.split('-')[0]
+    key = tmp.split('-')[1]
+    test = load_test(test_name)
+
+    if test:
+        creator = TestCreator(test)
+        
+        test_data = creator.create_test(seed=key)
+
+        result = evaluate_answers(test_data["answers"], answers, test.acceptable_error)
+
+        print(result)
 
     # Ответ клиенту
     return jsonify({"message": "Answers received successfully"})
