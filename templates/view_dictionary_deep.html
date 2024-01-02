@@ -18,11 +18,8 @@
         background-size: cover;
         background-position: center;
         color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 30% auto;
+        margin: 0;
+        padding: 0;
       }
 
       .main-container {
@@ -31,6 +28,7 @@
         padding: 20px;
         width: 90%;
         max-width: 800px; /* Ограничиваем максимальную ширину контейнера */
+        margin: 30vh auto; /* Центрируем контейнер по вертикали и горизонтали */
       }
 
       .sub-container {
@@ -42,7 +40,7 @@
 
       .dictionary-title {
         color: #fff;
-        font-size: 10vw; /* Используем vw для размера шрифта */
+        font-size: 4vw; /* Используем vw для размера шрифта */
         margin-bottom: 20px;
         text-align: center; /* Выравнивание по центру */
       }
@@ -51,12 +49,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%; /* Чтобы высота контейнера занимала 100% высоты родительского элемента */
+        margin-top: 2vh; /* Добавляем отступ сверху */
       }
 
-      .button-container button {
-        /* Ваши стили для кнопки */
-        margin: 5px;
+      .button-container a {
+        font-size: 3vw; /* Используем vw для размера шрифта кнопки */
       }
 
       .term {

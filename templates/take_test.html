@@ -45,6 +45,16 @@
         border-color: #45a049;
       }
 
+      .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2vh; /* Добавляем отступ сверху */
+      }
+
+      .button-container button {
+        margin: 1vw;
+      }
       .input-group {
         margin-bottom: 15px;
       }
@@ -90,6 +100,9 @@
       <ul class="test-list" id="testList">
         <!-- Список тестов будет добавлен здесь через JavaScript -->
       </ul>
+      <div class="button-container">
+        <a href="/" class="btn btn-secondary">Назад</a>
+      </div>
     </div>
 
     <!-- Подключение Bootstrap JS через CDN -->

@@ -18,26 +18,24 @@
         background-size: cover;
         background-position: center;
         color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
         margin: 0;
+        padding: 0;
       }
 
       .container {
         background-color: rgba(0, 0, 0, 0.7);
-        padding: 20px;
+        padding: 2vw; /* Используем vw для отступов */
+        border-radius: 2vw; /* Используем vw для радиуса границы */
         text-align: center;
-        border-radius: 10px;
+        margin: 5vh 5vw 1vh 5vw; /* Отступ сверху и снизу в 10vh, справа и слева - 5vw */
       }
 
       .btn-primary {
-        font-size: 1.5rem;
-        padding: 15px 20px;
+        font-size: 6vw; /* Используем vw для размера шрифта кнопки */
+        padding: 2vw;
         background-color: #4caf50;
         border-color: #4caf50;
-        width: 100%;
+        width: 33.33%; /* Размер кнопки в треть экрана */
       }
 
       .btn-primary:hover {
@@ -49,20 +47,21 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
+        margin-top: 2vh; /* Добавляем отступ сверху */
       }
 
       .button-container button {
-        margin: 5px;
+        margin: 1vw;
       }
 
       h1 {
-        font-size: 5vw; /* Используем vw для размера шрифта заголовка */
+        font-size: 6vw; /* Используем vw для размера шрифта заголовка */
         text-align: center;
+        margin-top: 5vh; /* Добавляем отступ сверху */
       }
 
       p {
-        font-size: 2vw; /* Используем vw для размера шрифта параграфа */
+        font-size: 3vw; /* Используем vw для размера шрифта параграфа */
       }
     </style>
   </head>
@@ -72,7 +71,7 @@
       <!-- Используйте replace для замены \n на тег <br> -->
       <p>{{ result.replace('|', '<br />') | safe }}</p>
       <div class="button-container">
-        <a href="/" class="btn btn-secondary">Назад</a>
+        <a href="/" class="btn btn-secondary btn-primary">Назад</a>
       </div>
     </div>
 
