@@ -1,10 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Создать тест</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Создание теста</title>
+    <!-- Подключение Bootstrap CSS через CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <!-- Кастомные стили -->
+    <style>
+      body {
+        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 600px; /* Ограничиваем максимальную ширину контейнера */
+      }
+
+      .btn-primary {
+        font-size: 1.5rem;
+        padding: 15px 20px;
+        background-color: #4caf50;
+        border-color: #4caf50;
+        width: 100%;
+      }
+
+      .btn-primary:hover {
+        background-color: #45a049;
+        border-color: #45a049;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        padding: 15px 20px;
+      }
+
+      .button-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .button-container button {
+        margin: 5px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Создать тест</h1>
-    <!-- Здесь можете добавить содержание страницы по созданию теста -->
+    <div class="container">
+      <h1>Создание теста</h1>
+      <form action="/create_test" method="post">
+        <div class="input-group">
+          <label for="name">Имя теста: </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="num_questions">Количество вопросов: </label>
+          <input
+            type="number"
+            id="num_questions"
+            name="num_questions"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="term_ratio">Частота выпадения термина: </label>
+          <input
+            type="number"
+            id="term_ratio"
+            name="term_ratio"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="acceptable_error">Процент правильности ответа: </label>
+          <input
+            type="number"
+            id="acceptable_error"
+            name="acceptable_error"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="dictionaries">Список словарей: </label>
+          <select
+            multiple
+            id="dictionaries"
+            name="dictionaries[]"
+            class="form-control"
+            required
+          >
+            <!-- Список словарей будет добавлен здесь через JavaScript -->
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Создать тест</button>
+      </form>
+
+      <div class="button-container">
+        <a href="/" class="btn btn-secondary">Назад</a>
+      </div>
+    </div>
+
+    <!-- Подключение Bootstrap JS через CDN -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      fetch("/get_dictionary_list")
+        .then((response) => response.json())
+        .then((data) => {
+          var dictionariesSelect = document.getElementById("dictionaries");
+          data.forEach(function (dictionary) {
+            var option = document.createElement("option");
+            option.value = dictionary;
+            option.text = dictionary;
+            dictionariesSelect.appendChild(option);
+          });
+        });
+    </script>
   </body>
 </html>

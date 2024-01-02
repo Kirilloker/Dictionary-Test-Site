@@ -1,7 +1,7 @@
 class Dictionary:
-    def __init__(self, name):
+    def __init__(self, name, terms=None):
         self.name = name
-        self.terms = {}
+        self.terms = terms or {}
 
     def add_term(self, term, definition):
         self.terms[term] = definition

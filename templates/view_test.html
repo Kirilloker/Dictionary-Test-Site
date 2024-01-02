@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Прохождение теста</title>
+    <title>{{ test_name }}</title>
     <!-- Подключение Bootstrap CSS через CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -51,45 +51,56 @@
 
       .input-group label {
         display: block;
-        margin-right: 15px;
+        margin-bottom: 5px;
       }
 
-      h1 {
-        text-align: center;
+      .question-container {
         margin-bottom: 20px;
       }
 
-      .test-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+      .btn-container {
+        display: flex;
+        justify-content: center;
       }
 
-      .test-list-item {
-        margin-bottom: 10px;
+      .btn-container button {
+        margin: 5px;
+      }
+
+      h1,
+      h2 {
+        text-align: center;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Прохождение теста</h1>
-      <form action="/take_test" method="post">
+      <h1>{{ test_name }}</h1>
+
+      {% for question in test_data.questions %}
+      <div class="question-container">
+        <h2>Вопрос:</h2>
+        <p>{{ question }}</p>
         <div class="input-group">
-          <label for="key">Ключ Генерации: </label>
+          <label for="answer_{{ loop.index }}">Ответ:</label>
           <input
             type="text"
-            id="key"
-            name="key"
+            id="answer_{{ loop.index }}"
+            name="answer_{{ loop.index }}"
             class="form-control"
             required
           />
         </div>
-      </form>
+      </div>
+      {% endfor %}
 
-      <h2 class="mt-4">Список тестов</h2>
-      <ul class="test-list" id="testList">
-        <!-- Список тестов будет добавлен здесь через JavaScript -->
-      </ul>
+      <!-- ... (ваш предыдущий HTML код) -->
+      {% set total_questions = test_data.questions|length %}
+      <div class="btn-container">
+        <button class="btn btn-primary" onclick="submitTest()">
+          Отправить
+        </button>
+      </div>
     </div>
 
     <!-- Подключение Bootstrap JS через CDN -->
@@ -99,38 +110,38 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        fetch("/get_test_list")
+      function submitTest(totalQuestions) {
+        var test_name = "{{ test_name }}";
+        var key = document.getElementById("key").value;
+
+        var answers = [];
+
+        for (var i = 1; i <= totalQuestions; i++) {
+          var answer = document.getElementById("answer_" + i).value;
+          answers.push(answer);
+        }
+
+        var data = {
+          test_name: test_name,
+          key: key,
+          answers: answers,
+        };
+
+        fetch("/submit_test", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
           .then((response) => response.json())
           .then((data) => {
-            var testList = document.getElementById("testList");
-            var keyInput = document.getElementById("key");
-
-            data.forEach(function (test) {
-              var li = document.createElement("li");
-              li.classList.add("test-list-item");
-
-              var btn = document.createElement("button");
-              btn.classList.add("btn", "btn-primary");
-              btn.innerText = test;
-              btn.addEventListener("click", function () {
-                // Получаем значение из поля ввода с идентификатором key
-                var key = keyInput.value.trim();
-
-                // Переход на страницу с просмотром теста и передача имени теста и ключа в URL
-                var testName = test.split("-")[0].trim();
-                window.location.href =
-                  "/view_test/" +
-                  encodeURIComponent(testName) +
-                  "-" +
-                  encodeURIComponent(key);
-              });
-
-              li.appendChild(btn);
-              testList.appendChild(li);
-            });
+            console.log("Ответы отправлены на сервер:", data);
+          })
+          .catch((error) => {
+            console.error("Ошибка при отправке ответов:", error);
           });
-      });
+      }
     </script>
   </body>
 </html>
