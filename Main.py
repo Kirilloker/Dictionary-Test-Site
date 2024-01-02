@@ -232,24 +232,37 @@ def evaluate_answers(correct_answers, user_answers, accuracy_threshold):
 
         similarity_percentage = calculate_similarity(correct_answer, user_answer)
 
-        result += (f"Вопрос {i + 1}:\n")
-        result += (f"Правильный ответ: {correct_answer}\n")
-        result += (f"Ответ пользователя: {user_answer}\n")
-        result += (f"Схожесть: {similarity_percentage:.2f}%\n\n")
+        result += (f"|Вопрос {i + 1}:\n|")
+        result += (f"Правильный ответ: {correct_answer}\n|")
+        result += (f"Ответ пользователя: {user_answer}\n|")
+        result += (f"Схожесть: {similarity_percentage:.2f}%\n\n|")
 
         if similarity_percentage >= accuracy_threshold:
             correct_count += 1
 
     incorrect_count = total_questions - correct_count
     accuracy_percentage = (correct_count / total_questions) * 100
+    tmp = ""
+    tmp += (f"||Итог:\n|")
+    tmp += (f"Правильных ответов: {correct_count}\n|")
+    tmp += (f"Неправильных ответов: {incorrect_count}\n|")
+    tmp += (f"Процент правильности: {accuracy_percentage:.2f}%\n|")
 
-    result += (f"Итог:\n")
-    result += (f"Правильных ответов: {correct_count}\n")
-    result += (f"Неправильных ответов: {incorrect_count}\n")
-    result += (f"Процент правильности: {accuracy_percentage:.2f}%\n")
+    result = tmp + result
 
     return result
 
+
+from flask import render_template, redirect
+
+@app.route('/result_page')
+def result_page_empty():
+    result = request.args.get('result', 'Ошибка: тест не найден')  # Получаем значение параметра result из URL
+    return render_template('result_page.html', result=result)
+
+@app.route('/result_page/<result>')
+def result_page(result):
+    return render_template('result_page.html', result=result)
 
 @app.route('/submit_test', methods=['POST'])
 def submit_test():
@@ -264,15 +277,12 @@ def submit_test():
 
     if test:
         creator = TestCreator(test)
-        
         test_data = creator.create_test(seed=key)
-
         result = evaluate_answers(test_data["answers"], answers, test.acceptable_error)
+        return jsonify(result)
 
-        print(result)
+    return redirect('/result_page?result=Ошибка: тест не найден')
 
-    # Ответ клиенту
-    return jsonify({"message": "Answers received successfully"})
 
 if __name__ == '__main__':
     app.run(debug=True)

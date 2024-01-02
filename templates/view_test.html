@@ -83,7 +83,7 @@
     ></script>
 
     <script>
-      function submitTest() {
+      async function submitTest() {
         // Получить текущую URL
         var currentURL = window.location.href;
 
@@ -94,23 +94,30 @@
           answers.push(input.value);
         });
 
-        // Отправить данные на бэкенд (замените на ваш реальный путь)
-        fetch("/submit_test", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            answers: answers,
-            currentURL: currentURL,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            // Возможно, здесь вы захотите выполнить какие-то дополнительные действия после отправки теста
-          })
-          .catch((error) => console.error("Ошибка при отправке теста:", error));
+        try {
+          // Отправить данные на бэкенд (замените на ваш реальный путь)
+          const response = await fetch("/submit_test", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              answers: answers,
+              currentURL: currentURL,
+            }),
+          });
+
+          if (response.ok) {
+            // Если ответ успешен, перенаправляем на страницу result_page
+            const data = await response.json();
+            window.location.href = "/result_page/" + data;
+            console.log("Ответ от бэкенда:", data);
+          } else {
+            console.error("Ошибка при отправке теста:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Ошибка при отправке теста:", error);
+        }
       }
     </script>
   </body>
