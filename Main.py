@@ -1,6 +1,9 @@
 from flask import Flask, render_template, jsonify, send_from_directory, request, redirect, url_for
 import os
 import json
+import datetime
+
+import logging
 
 from Test import Test
 from Dictionary import Dictionary
@@ -279,10 +282,19 @@ def submit_test():
         creator = TestCreator(test)
         test_data = creator.create_test(seed=key)
         result = evaluate_answers(test_data["answers"], answers, test.acceptable_error)
+        
+        print(datetime.datetime.now())
+        print(result)
+        
         return jsonify(result)
 
     return redirect('/result_page?result=Ошибка: тест не найден')
 
+# Отключение вывода логов в консоль
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
