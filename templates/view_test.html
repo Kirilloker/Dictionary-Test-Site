@@ -59,8 +59,7 @@
 
       {% for question in test_data.questions %}
       <div class="question-container">
-        <h2>Вопрос:</h2>
-        <p>{{ question }}</p>
+        <h2>{{ question }}:</h2>
         <label for="answer">Ответ:</label>
         <input
           type="text"
@@ -69,6 +68,7 @@
           class="form-control"
           required
         />
+        <br />
       </div>
       {% endfor %}
 

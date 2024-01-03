@@ -24,17 +24,14 @@ def get_dictionary_list():
     dictionary_files =  [os.path.splitext(f)[0] for f in os.listdir(dictionary_folder) if f.endswith('.json')]
     return jsonify(dictionary_files)
 
-# Маршрут для обслуживания статических файлов словарей
 @app.route('/dictionary/<path:filename>')
 def download_file(filename):
     return send_from_directory('Dictionary', filename)
 
-# Добавлен маршрут для /view_dictionary без указания словаря
 @app.route('/view_dictionary')
 def view_dictionary_list():
     return render_template('view_dictionary.html')
 
-# Добавлен маршрут для /view_dictionary без указания словаря
 @app.route('/create_test_view')
 def view_create_test():
     return render_template('create_test.html')
@@ -43,7 +40,6 @@ def view_create_test():
 def view_take_test():
     return render_template('take_test.html')
 
-# Добавлен маршрут для /view_dictionary без указания словаря
 @app.route('/view_dictionary/<dictionary_name>')
 def view_dictionary_deep(dictionary_name):
     dictionary_folder = 'Dictionary'
@@ -64,21 +60,12 @@ def manage_dictionary():
 
     dictionary_files = [f for f in os.listdir(dictionary_folder) if f.endswith('.json')]
 
-
     return render_template('manage_dictionary.html', dictionary_list=dictionary_files)
 
-
-# Добавлен маршрут для /manage_dictionary
-# @app.route('/manage_dictionary')
-# def manage_dictionary():
-#     return render_template('manage_dictionary.html')
-
-# Добавлен маршрут для /create_dictionary/<dictionary_name>
 @app.route('/create_dictionary/<dictionary_name>')
 def create_dictionary(dictionary_name):
     return render_template('create_dictionary.html', dictionary_name=dictionary_name)
 
-# Добавлен маршрут для /add_term
 @app.route('/add_term', methods=['POST'])
 def add_term():
     dictionary_name = request.form.get('dictionary_name')
@@ -87,9 +74,10 @@ def add_term():
 
     dictionary_folder = 'Dictionary'
     dictionary_path = os.path.join(dictionary_folder, dictionary_name)
-    dictionary_path += ".json" 
+    
+    if (dictionary_path[len(dictionary_path)-5:] != ".json"):
+        dictionary_path += ".json" 
 
-    # Создаем словарь, если его нет
     if not os.path.exists(dictionary_path):
         with open(dictionary_path, 'w', encoding='utf-8') as json_file:
             json.dump({}, json_file, ensure_ascii=False)
@@ -98,7 +86,6 @@ def add_term():
         with open(dictionary_path, 'r', encoding='utf-8') as json_file:
             data = json.load(json_file)
 
-            # Добавляем термин и определение в словарь
             data[term] = definition
 
         with open(dictionary_path, 'w', encoding='utf-8') as json_file:
@@ -109,7 +96,6 @@ def add_term():
         return 'File not found', 404
 
 
-# Добавлен маршрут для /create_test
 @app.route('/create_test', methods=['POST'])
 def create_test():
     name = request.form.get('name')
@@ -121,10 +107,8 @@ def create_test():
     for i in range(len(dictionaries)):
         dictionaries[i] += ".json"
 
-    # Создаем экземпляр класса Test
     test = Test(name, dictionaries, num_questions, term_ratio, acceptable_error)
 
-    # Сохраняем экземпляр класса Test в файл
     test_folder = 'Test'
     test_path = os.path.join(test_folder, f'{name}.json')
 
@@ -133,7 +117,6 @@ def create_test():
 
     return redirect('/')
 
-# Маршрут для получения списка тестов
 @app.route('/get_test_list')
 def get_test_list():
     test_folder = 'Test'
@@ -143,42 +126,31 @@ def get_test_list():
     test_files = [os.path.splitext(f)[0] for f in os.listdir(test_folder) if f.endswith('.json')]
     return jsonify(test_files)
 
-# Маршрут для создания "пустышки" теста
 @app.route('/take_test', methods=['POST'])
 def take_test():
     key = request.form.get('key')
 
-    # Создаем "пустышку" теста с использованием ключа генерации
     test_folder = 'Test'
     test_path = os.path.join(test_folder, f'{key}.json')
 
-    # Проверяем, существует ли тест с таким ключом
     if os.path.exists(test_path):
         return 'Test already exists', 400
 
-    # Создаем пустой файл для теста
     with open(test_path, 'w', encoding='utf-8') as json_file:
         json.dump({}, json_file)
 
-    # Перенаправляем на страницу просмотра теста
     return redirect(url_for('view_test', test_key=key))
 
 @app.route('/view_test/<test_key>')
 def view_test(test_key):
-    # Получаем имя теста и ключ генерации из параметра запроса
     test_name, key = test_key.rsplit('-', 1)
 
-    # Загружаем тест по имени
     test = load_test(test_name)
 
     if test:
-        # Создаем экземпляр класса TestCreator
         creator = TestCreator(test)
         
-        # Генерируем тест с использованием ключа генерации
         test_data = creator.create_test(seed=key)
-
-        # Отображаем результат на странице
         return render_template('view_test.html', test_name=test_name, test_data=test_data)
     else:
         return 'Test not found', 404
@@ -221,8 +193,7 @@ def generate_test(test_name, dictionaries, num_questions, term_ratio, acceptable
 from difflib import SequenceMatcher
 
 def calculate_similarity(str1, str2):
-    # Функция для расчета процента схожести двух строк
-    matcher = SequenceMatcher(None, str1, str2)
+    matcher = SequenceMatcher(None, str1.lower(), str2.lower())
     return matcher.ratio() * 100
 
 def evaluate_answers(correct_answers, user_answers, accuracy_threshold):
@@ -280,9 +251,6 @@ def submit_test():
     key = tmp.split('-')[1]
     test = load_test(test_name)
 
-    print(test_name)
-    print(test)
-
     if test:
         creator = TestCreator(test)
         test_data = creator.create_test(seed=key)
@@ -295,11 +263,9 @@ def submit_test():
 
     return jsonify("Тест не найден")
 
-# Отключение вывода логов в консоль
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
-
