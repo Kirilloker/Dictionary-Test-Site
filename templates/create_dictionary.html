@@ -14,42 +14,42 @@
     <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
         background-size: cover;
         background-position: center;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
       }
-
       .main-container {
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 15px;
         padding: 20px;
-        width: 90%;
-        max-width: 800px; /* Ограничиваем максимальную ширину контейнера */
+        width: 100%;
+        max-width: 800px;
       }
-
-      .button-container {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      .button-container button {
-        margin: 5px;
-      }
-
       .input-container {
         display: flex;
+        gap: 10px; /* Добавляем пространство между элементами */
+        flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку */
         margin-bottom: 20px;
       }
-
-      .input-container input {
+      .input-container input,
+      .input-container button {
         flex-grow: 1;
-        margin-right: 10px;
+        min-width: calc(
+          50% - 5px
+        ); /* Минимальная ширина каждого элемента, с учетом пространства между элементами */
+      }
+      .btn-primary {
+        margin-top: 0; /* Удаляем верхний отступ для кнопки, если она перенеслась на новую строку */
+      }
+
+      .button-container1 {
+        display: flex;
+        justify-content: center;
       }
     </style>
   </head>
@@ -71,7 +71,7 @@
         />
         <button class="btn btn-primary" onclick="addTerm()">Добавить</button>
       </div>
-      <div class="button-container">
+      <div class="button-container button-container1">
         <a href="/manage_dictionary" class="btn btn-secondary">Назад</a>
       </div>
     </div>
@@ -85,7 +85,6 @@
       function addTerm() {
         var termInput = document.getElementById("term");
         var definitionInput = document.getElementById("definition");
-
         var term = termInput.value;
         var definition = definitionInput.value;
 
@@ -102,9 +101,8 @@
               definition: definition,
             }),
           }).then((response) => {
-            // Очистить поля ввода после успешной отправки
             termInput.value = "";
-            definitionInput.value = "";
+            definitionInput.value = ""; // Очистить поля ввода после успешной отправки
           });
         } else {
           alert("Заполните все поля!");

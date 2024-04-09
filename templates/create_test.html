@@ -14,59 +14,35 @@
     <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
         background-size: cover;
         background-position: center;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
       }
-
       .container {
         background-color: rgba(0, 0, 0, 0.7);
         padding: 20px;
         border-radius: 10px;
-        max-width: 600px; /* Ограничиваем максимальную ширину контейнера */
+        max-width: 600px;
       }
-
-      .btn-primary {
-        font-size: 1.5rem;
-        padding: 15px 20px;
-        background-color: #4caf50;
-        border-color: #4caf50;
-        width: 100%;
+      .btn-primary,
+      .btn-secondary {
+        font-size: 1rem; /* Адаптируем размер шрифта для лучшей читаемости */
+        padding: 10px 15px; /* Уменьшаем отступы для совместимости с разными размерами экрана */
+        margin-top: 10px;
+        width: 100%; /* Убираем автоматическую ширину для кнопок */
       }
-
-      .btn-primary:hover {
-        background-color: #45a049;
-        border-color: #45a049;
+      .input-group label {
+        margin-bottom: 5px;
       }
-
       .input-group {
         margin-bottom: 15px;
       }
-
-      .input-group label {
-        display: block;
-        margin-bottom: 5px;
-        padding: 15px 20px;
-      }
-
-      .button-container {
-        text-align: center;
-        margin-top: 20px;
-      }
-      .button-container button {
-        margin: 5px;
-        align-items: center;
-        justify-content: center;
-      }
-
       h1 {
-        text-align: center;
         margin-bottom: 20px;
       }
     </style>
@@ -75,8 +51,8 @@
     <div class="container">
       <h1>Создание теста</h1>
       <form action="/create_test" method="post">
-        <div class="input-group">
-          <label for="name">Имя теста: </label>
+        <div class="input-group mb-3">
+          <label for="name">Имя теста:   </label>
           <input
             type="text"
             id="name"
@@ -86,8 +62,8 @@
           />
         </div>
 
-        <div class="input-group">
-          <label for="num_questions">Количество вопросов: </label>
+        <div class="input-group mb-3">
+          <label for="num_questions">Количество вопросов:   </label>
           <input
             type="number"
             id="num_questions"
@@ -97,8 +73,8 @@
           />
         </div>
 
-        <div class="input-group">
-          <label for="term_ratio">Частота выпадения термина: </label>
+        <div class="input-group mb-3">
+          <label for="term_ratio">Частота выпадения термина:   </label>
           <input
             type="number"
             id="term_ratio"
@@ -108,8 +84,8 @@
           />
         </div>
 
-        <div class="input-group">
-          <label for="acceptable_error">Процент правильности ответа: </label>
+        <div class="input-group mb-3">
+          <label for="acceptable_error">Процент правильности ответа:   </label>
           <input
             type="number"
             id="acceptable_error"
@@ -119,8 +95,8 @@
           />
         </div>
 
-        <div class="input-group">
-          <label for="dictionaries">Список словарей: </label>
+        <div class="input-group mb-3">
+          <label for="dictionaries">Список словарей:   </label>
           <select
             multiple
             id="dictionaries"
@@ -132,12 +108,13 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Создать тест</button>
+        <div class="button-container text-center">
+          <button type="submit" class="btn btn-primary mb-2">
+            Создать тест
+          </button>
+          <a href="/" class="btn btn-secondary">Назад</a>
+        </div>
       </form>
-
-      <div class="button-container">
-        <a href="/" class="btn btn-secondary">Назад</a>
-      </div>
     </div>
 
     <!-- Подключение Bootstrap JS через CDN -->
@@ -154,7 +131,7 @@
           data.forEach(function (dictionary) {
             var option = document.createElement("option");
             option.value = dictionary;
-            option.text = dictionary;
+            option.text = dictionary.replace(".json", ""); // Улучшенное отображение имени словаря без расширения файла
             dictionariesSelect.appendChild(option);
           });
         });

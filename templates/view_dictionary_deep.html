@@ -14,56 +14,47 @@
     <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
         background-size: cover;
         background-position: center;
         color: white;
         margin: 0;
-        padding: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
       }
-
       .main-container {
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 15px;
         padding: 20px;
-        width: 90%;
-        max-width: 800px; /* Ограничиваем максимальную ширину контейнера */
-        margin: 30vh auto; /* Центрируем контейнер по вертикали и горизонтали */
+        width: 100%;
+        max-width: 800px;
       }
-
       .sub-container {
         background-color: #404040;
         border-radius: 10px;
         padding: 15px;
         margin-bottom: 15px;
       }
-
       .dictionary-title {
         color: #fff;
-        font-size: 4vw; /* Используем vw для размера шрифта */
+        font-size: 1.5rem; /* Задаем фиксированный размер шрифта для заголовка */
         margin-bottom: 20px;
-        text-align: center; /* Выравнивание по центру */
+        text-align: center;
       }
-
-      .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2vh; /* Добавляем отступ сверху */
-      }
-
       .button-container a {
-        font-size: 3vw; /* Используем vw для размера шрифта кнопки */
+        font-size: 1rem; /* Фиксированный размер шрифта для кнопки */
       }
-
+      .term,
+      .definition {
+        font-size: 1rem; /* Фиксированный размер шрифта для терминов и определений */
+      }
       .term {
         color: #fff;
-        font-size: 1.5rem;
       }
-
       .definition {
         color: #d3d3d3;
-        font-size: 1.2rem;
       }
     </style>
   </head>
@@ -79,7 +70,6 @@
         <div class="definition">{{ definition }}</div>
       </div>
       {% endfor %}
-
       <div class="button-container">
         <a href="/view_dictionary" class="btn btn-secondary">Назад</a>
       </div>

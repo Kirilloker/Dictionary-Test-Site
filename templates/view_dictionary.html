@@ -14,49 +14,38 @@
     <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
         background-size: cover;
         background-position: center;
         color: white;
+        height: 100vh;
+        margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
-        margin: 0;
       }
-
       .container {
         background-color: rgba(0, 0, 0, 0.7);
         padding: 20px;
         border-radius: 10px;
+        width: auto;
+        max-width: 90%;
       }
-
-      .btn-primary {
-        font-size: 1.5rem;
-        padding: 15px 20px;
-        background-color: #4caf50;
-        border-color: #4caf50;
+      .btn-primary,
+      .btn-secondary {
+        font-size: 1.2rem;
+        padding: 10px 15px;
+        margin: 5px;
         width: 100%;
       }
-
-      .btn-primary:hover {
-        background-color: #45a049;
-        border-color: #45a049;
+      .btn-primary:hover,
+      .btn-secondary:hover {
+        opacity: 0.85;
       }
-
-      .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%; /* Чтобы высота контейнера занимала 100% высоты родительского элемента */
-      }
-
-      .button-container button {
-        /* Ваши стили для кнопки */
-        margin: 5px;
-      }
-
       h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .button-container {
         text-align: center;
       }
     </style>
@@ -64,10 +53,10 @@
   <body>
     <div class="container">
       <h1>Список словарей</h1>
-      <ul class="list-group" id="dictionaryList">
+      <div class="list-group" id="dictionaryList">
         <!-- Список кнопок будет добавлен здесь через JavaScript -->
-      </ul>
-      <div class="button-container">
+      </div>
+      <div class="button-container mt-4">
         <a href="/" class="btn btn-secondary">Назад</a>
       </div>
     </div>
@@ -82,16 +71,12 @@
       fetch("/get_dictionary_list")
         .then((response) => response.json())
         .then((data) => {
-          var dictionaryList = document.getElementById("dictionaryList");
+          const dictionaryList = document.getElementById("dictionaryList");
           data.forEach(function (dictionary) {
-            var btn = document.createElement("button");
-            btn.classList.add("btn", "btn-primary", "mb-2");
+            const btn = document.createElement("a");
+            btn.classList.add("btn", "btn-primary", "mb-2", "w-100");
             btn.innerText = dictionary;
-            btn.addEventListener("click", function () {
-              // Переход на страницу с просмотром словаря и передача имени словаря в URL
-              window.location.href =
-                "/view_dictionary/" + encodeURIComponent(dictionary);
-            });
+            btn.href = "/view_dictionary/" + encodeURIComponent(dictionary);
             dictionaryList.appendChild(btn);
           });
         });

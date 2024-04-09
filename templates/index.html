@@ -14,23 +14,22 @@
     <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
         background-size: cover;
         background-position: center;
         color: white;
+        height: 100vh;
+        margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
-        margin: 0;
       }
-
       .container {
         background-color: rgba(0, 0, 0, 0.7);
         padding: 20px;
         border-radius: 10px;
+        width: auto;
+        max-width: 90%;
       }
-
       .btn-primary {
         font-size: 1.5rem;
         padding: 15px 20px;
@@ -38,19 +37,13 @@
         border-color: #4caf50;
         width: 100%;
       }
-
       .btn-primary:hover {
         background-color: #45a049;
         border-color: #45a049;
       }
-
       h1 {
         text-align: center;
-      }
-
-      .list-group {
-        margin: 0;
-        padding: 0;
+        margin-bottom: 30px;
       }
       .list-group-item {
         border: none;
@@ -61,24 +54,20 @@
   <body>
     <div class="container">
       <h1>Главное меню</h1>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <a class="btn btn-primary" href="/take_test">Пройти тест</a>
-        </li>
-        <li class="list-group-item">
-          <a class="btn btn-primary" href="/create_test_view">Создать тест</a>
-        </li>
-        <li class="list-group-item">
-          <a class="btn btn-primary" href="/manage_dictionary"
-            >Создать/изменить словарь</a
-          >
-        </li>
-        <li class="list-group-item">
-          <a class="btn btn-primary" href="/view_dictionary"
-            >Просмотр словаря</a
-          >
-        </li>
-      </ul>
+      <div class="d-grid gap-2">
+        <a class="btn btn-primary" href="/take_test" role="button"
+          >Пройти тест</a
+        >
+        <a class="btn btn-primary" href="/create_test_view" role="button"
+          >Создать тест</a
+        >
+        <a class="btn btn-primary" href="/manage_dictionary" role="button"
+          >Создать/изменить словарь</a
+        >
+        <a class="btn btn-primary" href="/view_dictionary" role="button"
+          >Просмотр словаря</a
+        >
+      </div>
     </div>
     <!-- Подключение Bootstrap JS через CDN -->
     <script

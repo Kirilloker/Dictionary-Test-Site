@@ -4,108 +4,74 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Прохождение теста</title>
-    <!-- Подключение Bootstrap CSS через CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
         background-size: cover;
         background-position: center;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
       }
-
       .container {
         background-color: rgba(0, 0, 0, 0.7);
         padding: 20px;
         border-radius: 10px;
-        max-width: 600px; /* Ограничиваем максимальную ширину контейнера */
+        max-width: 600px;
       }
-
-      .btn-primary {
-        font-size: 1.5rem;
-        padding: 15px 20px;
-        background-color: #4caf50;
-        border-color: #4caf50;
-        width: 100%;
-      }
-
-      .btn-primary:hover {
-        background-color: #45a049;
-        border-color: #45a049;
-      }
-
-      .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2vh; /* Добавляем отступ сверху */
-      }
-
-      .button-container button {
-        margin: 1vw;
+      .btn-primary,
+      .btn-secondary {
+        font-size: 1rem;
+        padding: 10px 15px;
+        width: 100%; /* Установка ширины кнопки на 100% */
+        margin-bottom: 10px;
       }
       .input-group {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
       }
-
-      .input-group label {
-        display: block;
-        margin-right: 15px;
+      .input-group label,
+      .input-group input {
+        width: 100%;
       }
-
-      h1 {
+      h1,
+      h2 {
         text-align: center;
         margin-bottom: 20px;
       }
-
       .test-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+        padding-left: 0rem;
       }
-
       .test-list-item {
-        margin-bottom: 10px;
+        list-style-type: none;
+        margin-bottom: 10px; /* Добавляем отступ снизу для каждого элемента списка */
+      }
+      .test-list-item button {
+        width: 100%; /* Унификация ширины кнопок в списке с кнопкой "Назад" */
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Прохождение теста</h1>
-      <form action="/take_test" method="post">
-        <div class="input-group">
-          <label for="key">Ключ Генерации: </label>
-          <input
-            type="text"
-            id="key"
-            name="key"
-            class="form-control"
-            required
-          />
-        </div>
-      </form>
+      <div class="input-group">
+        <label for="key">Ключ Генерации:</label>
+        <input type="text" id="key" name="key" class="form-control" required />
+      </div>
 
-      <h2 class="mt-4">Список тестов</h2>
-      <ul class="test-list" id="testList">
-        <!-- Список тестов будет добавлен здесь через JavaScript -->
-      </ul>
+      <h2>Список тестов</h2>
+      <ul class="test-list" id="testList"></ul>
       <div class="button-container">
         <a href="/" class="btn btn-secondary">Назад</a>
       </div>
     </div>
-
-    <!-- Подключение Bootstrap JS через CDN -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
@@ -117,8 +83,6 @@
           .then((response) => response.json())
           .then((data) => {
             var testList = document.getElementById("testList");
-            var keyInput = document.getElementById("key");
-
             data.forEach(function (test) {
               var li = document.createElement("li");
               li.classList.add("test-list-item");
@@ -127,16 +91,11 @@
               btn.classList.add("btn", "btn-primary");
               btn.innerText = test;
               btn.addEventListener("click", function () {
-                // Получаем значение из поля ввода с идентификатором key
-                var key = keyInput.value.trim();
-
-                // Переход на страницу с просмотром теста и передача имени теста и ключа в URL
-                var testName = test.split("-")[0].trim();
-                window.location.href =
-                  "/view_test/" +
-                  encodeURIComponent(testName) +
-                  "-" +
-                  encodeURIComponent(key);
+                var key = document.getElementById("key").value.trim();
+                var testName = encodeURIComponent(test.split("-")[0].trim());
+                window.location.href = `/view_test/${testName}-${encodeURIComponent(
+                  key
+                )}`;
               });
 
               li.appendChild(btn);

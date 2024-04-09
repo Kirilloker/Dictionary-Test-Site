@@ -14,64 +14,53 @@
     <!-- Кастомные стили -->
     <style>
       body {
-        background-image: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg?w=996&t=st=1704199035~exp=1704199635~hmac=c58097a9c0c60651f5fdba9a2a22ba7a03bcda2a3bb447f91863a0ab3a7b0a5b");
-        background-size: cover;
-        background-position: center;
-        color: white;
         margin: 0;
         padding: 0;
+        color: white;
       }
 
       .container {
         background-color: rgba(0, 0, 0, 0.7);
-        padding: 2vw; /* Используем vw для отступов */
-        border-radius: 2vw; /* Используем vw для радиуса границы */
+        padding: 20px; /* Адаптировано для лучшего вида */
+        border-radius: 15px; /* Скорректировано для более приятного вида */
         text-align: center;
-        margin: 5vh 5vw 1vh 5vw; /* Отступ сверху и снизу в 10vh, справа и слева - 5vw */
+        margin: 5vh auto; /* Центрирование и вертикальный отступ */
+        max-width: 80%; /* Максимальная ширина для поддержки большего диапазона устройств */
       }
 
-      .btn-primary {
-        font-size: 6vw; /* Используем vw для размера шрифта кнопки */
-        padding: 2vw;
+      .btn-primary,
+      .btn-secondary {
+        font-size: 1.5rem; /* Обновленный размер текста для лучшей видимости */
+        padding: 10px 20px;
         background-color: #4caf50;
-        border-color: #4caf50;
-        width: 33.33%; /* Размер кнопки в треть экрана */
+        border: none;
+        margin-top: 20px;
       }
 
-      .btn-primary:hover {
+      .btn-primary:hover,
+      .btn-secondary:hover {
         background-color: #45a049;
-        border-color: #45a049;
       }
 
       .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2vh; /* Добавляем отступ сверху */
-      }
-
-      .button-container button {
-        margin: 1vw;
+        margin-top: 20px;
       }
 
       h1 {
-        font-size: 6vw; /* Используем vw для размера шрифта заголовка */
-        text-align: center;
-        margin-top: 5vh; /* Добавляем отступ сверху */
+        margin-bottom: 20px;
       }
 
       p {
-        font-size: 3vw; /* Используем vw для размера шрифта параграфа */
+        font-size: 1.25rem; /* Обновлено для улучшения читабельности */
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Результат</h1>
-      <!-- Используйте replace для замены \n на тег <br> -->
       <p>{{ result.replace('|', '<br />') | safe }}</p>
       <div class="button-container">
-        <a href="/" class="btn btn-secondary btn-primary">Назад</a>
+        <a href="/" class="btn btn-secondary">Назад</a>
       </div>
     </div>
 
